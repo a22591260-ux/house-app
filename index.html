@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>看房筆記與議價評估系統</title>
+    <title>看房筆記與議價評估系統 (雲端同步版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -38,7 +38,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg leading-tight">看房筆記與出價評估系統</h1>
-                    <p class="text-xs text-slate-400">樹林區太順街48號基準測距・自動即時存檔</p>
+                    <p class="text-xs text-slate-400">樹林區太順街48號基準測距・手機電腦跨裝置雲端同步</p>
                 </div>
             </div>
 
@@ -65,9 +65,9 @@
                     <input type="file" id="import-file" accept=".json" onchange="importJSON(event)" class="hidden">
                 </label>
 
-                <!-- 自動存檔狀態提示 -->
-                <span id="save-status" class="text-xs text-emerald-400 opacity-0 transition-opacity duration-300 flex items-center gap-1">
-                    <i class="fa-solid fa-check-circle"></i> 已即時儲存
+                <!-- 雲端同步狀態提示 -->
+                <span id="save-status" class="text-xs text-sky-400 opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                    <i class="fa-solid fa-cloud-check"></i> <span id="sync-text">雲端連線中...</span>
                 </span>
             </div>
         </div>
@@ -474,22 +474,97 @@
 
     </main>
 
+    <!-- 圖片大圖檢視 Lightbox 彈窗 -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4" onclick="closeImageModal()">
+        <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center">
+            <img id="image-modal-src" src="" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl">
+            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white text-2xl hover:text-slate-300">
+                <i class="fa-solid fa-xmark"></i> 關閉
+            </button>
+        </div>
+    </div>
+
+    <!-- 引入 Firebase SDK (Modular App API v9) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // 🔑 您專屬的 Firebase 金鑰設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyCiHLHWGrfgaWGEOOHawpvsuG6XyD8ENDY",
+            authDomain: "house-note-c5114.firebaseapp.com",
+            databaseURL: "https://house-note-c5114-default-rtdb.firebaseio.com",
+            projectId: "house-note-c5114",
+            storageBucket: "house-note-c5114.appspot.com",
+            messagingSenderId: "517296638517",
+            appId: "1:517296638517:web:c67bc2f9862edff138d6ea"
+        };
+
+        let db = null;
+        let houseRef = null;
+        let saveTimeout = null;
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            houseRef = ref(db, 'house_notes_data');
+
+            // 聽取雲端 Realtime 變更（手機與電腦同步連動）
+            onValue(houseRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    window.properties = Array.isArray(data) ? data : Object.values(data);
+                } else {
+                    window.properties = [];
+                }
+                
+                localStorage.setItem('house_notes_data', JSON.stringify(window.properties));
+
+                window.renderPropertyList();
+                window.renderOverviewTable();
+
+                if (window.currentId) {
+                    window.selectProperty(window.currentId, false);
+                } else if (window.properties.length > 0) {
+                    window.selectProperty(window.properties[0].id, false);
+                } else {
+                    window.showNoPropertySelected();
+                }
+
+                document.getElementById('sync-text').innerText = "雲端即時同步中";
+            });
+        } catch(e) {
+            console.warn("Firebase 連線提示：", e);
+            document.getElementById('sync-text').innerText = "單機模式";
+        }
+
+        window.savePropertiesToStorage = function() {
+            localStorage.setItem('house_notes_data', JSON.stringify(window.properties));
+            
+            if (houseRef) {
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(() => {
+                    set(houseRef, window.properties);
+                }, 300);
+            }
+            window.showSaveStatus();
+        }
+    </script>
+
     <!-- 核心 JavaScript 腳本 -->
     <script>
-        // 基準點資訊：新北市樹林區太順街48號
         const BASE_POINT = {
             address: "新北市樹林區太順街48號",
             lat: 24.991278,
             lng: 121.425319
         };
 
-        let properties = [];
-        let currentId = null;
+        window.properties = [];
+        window.currentId = null;
         let chartInstance = null;
         let addressDebounceTimer = null;
         let sortConfig = { field: 'createdAt', direction: 'desc' };
 
-        // 初始化
         window.addEventListener('DOMContentLoaded', () => {
             loadPropertiesFromStorage();
             renderPropertyList();
@@ -500,30 +575,22 @@
                 showNoPropertySelected();
             }
 
-            // 監聽全域 Ctrl + V 貼上圖片
             document.addEventListener('paste', handleGlobalPaste);
         });
 
-        // 讀取與寫入 LocalStorage
         function loadPropertiesFromStorage() {
             const data = localStorage.getItem('house_notes_data');
             if (data) {
-                try { properties = JSON.parse(data); } catch(e) { properties = []; }
+                try { window.properties = JSON.parse(data); } catch(e) { window.properties = []; }
             }
         }
 
-        function savePropertiesToStorage() {
-            localStorage.setItem('house_notes_data', JSON.stringify(properties));
-            showSaveStatus();
-        }
-
-        function showSaveStatus() {
+        window.showSaveStatus = function() {
             const statusEl = document.getElementById('save-status');
             statusEl.classList.remove('opacity-0');
             setTimeout(() => statusEl.classList.add('opacity-0'), 1500);
         }
 
-        // 新增物件
         function createNewProperty() {
             const id = 'house_' + Date.now();
             const todayStr = new Date().toISOString().split('T')[0];
@@ -553,7 +620,7 @@
                 notes: '',
                 isSold: false,
                 soldPrice: '',
-                priceHistory: [], // 初始設為空陣列，由開價輸入自動設定第一筆
+                priceHistory: [],
                 photos: [],
                 distanceText: '',
                 distanceVal: 999999
@@ -565,16 +632,14 @@
             selectProperty(id);
         }
 
-        // 選擇物件
-        function selectProperty(id) {
-            currentId = id;
+        window.selectProperty = function(id, reRenderList = true) {
+            window.currentId = id;
             const prop = properties.find(p => p.id === id);
             if (!prop) return;
 
             document.getElementById('no-property-selected').classList.add('hidden');
             document.getElementById('property-form-container').classList.remove('hidden');
 
-            // 填入表單欄位
             document.getElementById('display-address-header').innerText = prop.address || '新未命名物件';
             document.getElementById('field-address').value = prop.address || '';
             document.getElementById('field-ping').value = prop.ping || '';
@@ -606,7 +671,7 @@
             document.getElementById('field-soldPrice').value = prop.soldPrice || '';
 
             handleSoldToggle(false);
-            calculatePrices();
+            calculatePrices(false);
             calculateDaysOnMarket();
             renderPriceHistoryList();
             renderChart();
@@ -619,20 +684,19 @@
                 document.getElementById('distance-result').innerHTML = '<span class="text-slate-400 font-normal">請輸入地址...</span>';
             }
 
-            renderPropertyList();
+            if (reRenderList) renderPropertyList();
         }
 
         function getCurrentProperty() {
             return properties.find(p => p.id === currentId);
         }
 
-        function showNoPropertySelected() {
+        window.showNoPropertySelected = function() {
             document.getElementById('no-property-selected').classList.remove('hidden');
             document.getElementById('property-form-container').classList.add('hidden');
-            currentId = null;
+            window.currentId = null;
         }
 
-        // 刪除物件
         function deleteCurrentProperty() {
             if (!currentId) return;
             if (confirm('確定要刪除此物件筆記嗎？刪除後無法復原。')) {
@@ -647,7 +711,6 @@
             }
         }
 
-        // 即時自動儲存表單
         function autoSave() {
             const prop = getCurrentProperty();
             if (!prop) return;
@@ -687,7 +750,6 @@
             updateGoogleMapsBtn();
         }
 
-        // 地址輸入與距離自動計算
         function onAddressInput() {
             autoSave();
             const address = document.getElementById('field-address').value;
@@ -710,7 +772,6 @@
             }, 800);
         }
 
-        // OpenStreetMap 地理編碼與距離試算
         async function calculateDistance(targetAddress) {
             const prop = getCurrentProperty();
             if (!targetAddress || targetAddress.length < 3) return;
@@ -756,7 +817,6 @@
             }
         }
 
-        // Haversine Formula 計算球面大圓距離 (km)
         function getHaversineDistance(lat1, lon1, lat2, lon2) {
             const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -779,9 +839,8 @@
             }
         }
 
-        // 計算價格與折數 (核心修復：自動設定第一筆歷史為開價總價)
-        function calculatePrices() {
-            autoSave();
+        function calculatePrices(triggerSave = true) {
+            if (triggerSave) autoSave();
             const ping = parseFloat(document.getElementById('field-ping').value) || 0;
             const totalPrice = parseFloat(document.getElementById('field-totalPrice').value) || 0;
 
@@ -790,19 +849,18 @@
                 const todayStr = new Date().toISOString().split('T')[0];
                 const listingDate = prop.listingDate || todayStr;
                 
-                // 清除舊資料中的全空或 0 萬紀錄
-                if (prop.priceHistory) {
-                    prop.priceHistory = prop.priceHistory.filter(h => h.price && Number(h.price) > 0);
-                } else {
-                    prop.priceHistory = [];
-                }
+                if (!prop.priceHistory) prop.priceHistory = [];
+                prop.priceHistory = prop.priceHistory.filter(h => h.price && Number(h.price) > 0);
 
-                // 如果歷程為空，或者歷程只有 1 筆，直接同步更新為當前的開價總價
                 if (prop.priceHistory.length === 0) {
-                    prop.priceHistory = [{ date: listingDate, price: totalPrice }];
-                } else if (prop.priceHistory.length === 1) {
-                    prop.priceHistory[0].price = totalPrice;
-                    prop.priceHistory[0].date = listingDate;
+                    prop.priceHistory.push({ date: listingDate, price: totalPrice });
+                } else {
+                    const lastRecord = prop.priceHistory[prop.priceHistory.length - 1];
+                    if (lastRecord.date === todayStr) {
+                        lastRecord.price = totalPrice;
+                    } else if (lastRecord.price !== totalPrice) {
+                        prop.priceHistory.push({ date: todayStr, price: totalPrice });
+                    }
                 }
 
                 renderPriceHistoryList();
@@ -882,7 +940,6 @@
             autoSave();
             calculateDaysOnMarket();
             
-            // 同步刊登日期至第一筆開價紀錄
             const prop = getCurrentProperty();
             if (prop && prop.priceHistory && prop.priceHistory.length > 0) {
                 prop.priceHistory[0].date = document.getElementById('field-listingDate').value;
@@ -903,7 +960,6 @@
             document.getElementById('calc-daysOnMarket').innerText = diffDays;
         }
 
-        // 調價歷程管理
         function addPriceHistoryModal() {
             const prop = getCurrentProperty();
             if (!prop) return;
@@ -930,6 +986,26 @@
             savePropertiesToStorage();
         }
 
+        function deletePriceHistory(index) {
+            const prop = getCurrentProperty();
+            if (!prop || !prop.priceHistory) return;
+
+            if (confirm('確定要刪除這筆調價紀錄嗎？')) {
+                prop.priceHistory.splice(index, 1);
+                
+                if (prop.priceHistory.length > 0) {
+                    const lastPrice = prop.priceHistory[prop.priceHistory.length - 1].price;
+                    prop.totalPrice = lastPrice;
+                    document.getElementById('field-totalPrice').value = lastPrice;
+                }
+
+                calculatePrices();
+                renderPriceHistoryList();
+                renderChart();
+                savePropertiesToStorage();
+            }
+        }
+
         function renderPriceHistoryList() {
             const prop = getCurrentProperty();
             const container = document.getElementById('price-history-list');
@@ -942,12 +1018,18 @@
                 return;
             }
 
-            history.slice().reverse().forEach((item) => {
+            history.slice().reverse().forEach((item, revIdx) => {
+                const actualIndex = history.length - 1 - revIdx;
                 const div = document.createElement('div');
-                div.className = 'flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200';
+                div.className = 'flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 group';
                 div.innerHTML = `
                     <span class="text-slate-500 font-mono">${item.date}</span>
-                    <span class="font-bold text-indigo-700">${item.price} 萬</span>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-indigo-700">${item.price} 萬</span>
+                        <button onclick="deletePriceHistory(${actualIndex})" class="text-slate-300 hover:text-red-500 transition px-1" title="刪除此紀錄">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
                 `;
                 container.appendChild(div);
             });
@@ -960,7 +1042,6 @@
             if (chartInstance) chartInstance.destroy();
 
             let history = prop ? (prop.priceHistory || []) : [];
-            // 自動過濾無效價格 (小於等於 0 或非數字)
             history = history.filter(h => h.price && !isNaN(h.price) && Number(h.price) > 0);
 
             if (history.length === 0) {
@@ -990,26 +1071,48 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { 
-                            beginAtZero: false 
-                        }
+                        y: { beginAtZero: false }
                     }
                 }
             });
         }
 
-        // 照片管理與剪貼簿貼上
-        function handleFileUpload(event) {
+        function compressImage(base64Str, maxWidth = 1000, quality = 0.7) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = base64Str;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = () => resolve(base64Str);
+            });
+        }
+
+        async function handleFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
 
-            Array.from(files).forEach(file => {
+            for (let file of files) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    addPhotoToCurrentProperty(e.target.result);
+                reader.onload = async (e) => {
+                    const compressed = await compressImage(e.target.result);
+                    addPhotoToCurrentProperty(compressed);
                 };
                 reader.readAsDataURL(file);
-            });
+            }
         }
 
         function handleGlobalPaste(e) {
@@ -1019,8 +1122,9 @@
                 if (item.type.indexOf('image') === 0) {
                     const blob = item.getAsFile();
                     const reader = new FileReader();
-                    reader.onload = (event) => {
-                        addPhotoToCurrentProperty(event.target.result);
+                    reader.onload = async (event) => {
+                        const compressed = await compressImage(event.target.result);
+                        addPhotoToCurrentProperty(compressed);
                     };
                     reader.readAsDataURL(blob);
                 }
@@ -1035,7 +1139,10 @@
                         if (type.startsWith('image/')) {
                             const blob = await item.getType(type);
                             const reader = new FileReader();
-                            reader.onload = (e) => addPhotoToCurrentProperty(e.target.result);
+                            reader.onload = async (e) => {
+                                const compressed = await compressImage(e.target.result);
+                                addPhotoToCurrentProperty(compressed);
+                            };
                             reader.readAsDataURL(blob);
                         }
                     }
@@ -1062,6 +1169,15 @@
             renderPhotos();
         }
 
+        function openImageModal(photoUrl) {
+            document.getElementById('image-modal-src').src = photoUrl;
+            document.getElementById('image-modal').classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
         function renderPhotos() {
             const prop = getCurrentProperty();
             const grid = document.getElementById('photo-grid');
@@ -1080,17 +1196,16 @@
                 const div = document.createElement('div');
                 div.className = 'relative group rounded-lg overflow-hidden border border-slate-200 bg-slate-900 aspect-video';
                 div.innerHTML = `
-                    <img src="${photo}" class="w-full h-full object-cover group-hover:opacity-80 transition cursor-pointer" onclick="window.open('${photo}')">
-                    <button onclick="deletePhoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition shadow" title="刪除照片">
-                        <i class="fa-solid fa-xmark w-3 h-3 flex items-center justify-center"></i>
+                    <img src="${photo}" class="w-full h-full object-cover group-hover:opacity-80 transition cursor-pointer" onclick="openImageModal('${photo}')">
+                    <button onclick="deletePhoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white p-1.5 rounded-full text-xs opacity-0 group-hover:opacity-100 transition shadow z-10" title="刪除照片">
+                        <i class="fa-solid fa-trash-can"></i>
                     </button>
                 `;
                 grid.appendChild(div);
             });
         }
 
-        // 渲染左側物件清單
-        function renderPropertyList() {
+        window.renderPropertyList = function() {
             const container = document.getElementById('property-list-container');
             const searchKeyword = document.getElementById('search-input').value.toLowerCase().trim();
             container.innerHTML = '';
@@ -1150,7 +1265,6 @@
             });
         }
 
-        // 頁面切換與總覽表渲染
         function switchView(viewName) {
             const btnEditor = document.getElementById('btn-view-editor');
             const btnTable = document.getElementById('btn-view-table');
@@ -1171,7 +1285,7 @@
             }
         }
 
-        function renderOverviewTable() {
+        window.renderOverviewTable = function() {
             const tbody = document.getElementById('overview-table-body');
             document.getElementById('table-total-count').innerText = `共 ${properties.length} 筆物件`;
             tbody.innerHTML = '';
@@ -1232,7 +1346,6 @@
             renderOverviewTable();
         }
 
-        // 匯出與匯入 JSON
         function exportJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(properties, null, 2));
             const downloadAnchor = document.createElement('a');
@@ -1256,7 +1369,7 @@
                         savePropertiesToStorage();
                         renderPropertyList();
                         if (properties.length > 0) selectProperty(properties[0].id);
-                        alert('成功匯入看房資料！');
+                        alert('成功匯入看房資料並同步雲端！');
                     } else {
                         alert('匯入的 JSON 格式不正確。');
                     }
