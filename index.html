@@ -67,7 +67,7 @@
 
                 <!-- 雲端同步狀態提示 -->
                 <span id="save-status" class="text-xs text-sky-400 opacity-100 transition-opacity duration-300 flex items-center gap-1">
-                    <i class="fa-solid fa-cloud"></i> <span id="sync-text">雲端連線中...</span>
+                    <i class="fa-solid fa-cloud-check"></i> <span id="sync-text">雲端連線中...</span>
                 </span>
             </div>
         </div>
@@ -124,7 +124,6 @@
                             <h2 id="display-address-header" class="text-xl font-bold text-slate-900 mt-0.5">請輸入地址...</h2>
                         </div>
                         <div class="flex items-center gap-3">
-                            <!-- 成交/售出標記切換 -->
                             <label class="cursor-pointer flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">
                                 <input type="checkbox" id="field-isSold" onchange="handleSoldToggle()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
                                 <span class="text-xs font-semibold text-slate-700">標示已售出</span>
@@ -163,14 +162,12 @@
                             <i class="fa-solid fa-location-dot text-indigo-600"></i> 基本與位置資訊
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- 地址 -->
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-medium text-slate-600 mb-1">房屋地址 <span class="text-red-500">*</span></label>
                                 <input type="text" id="field-address" list="datalist-address" oninput="onAddressInput()" placeholder="請輸入完整地址，例如：新北市樹林區中山路一段..." class="w-full text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                                 <datalist id="datalist-address"></datalist>
                             </div>
 
-                            <!-- 距離計算區塊 -->
                             <div class="md:col-span-2 bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
                                 <div class="flex items-center gap-2">
                                     <div class="p-2 bg-indigo-100 text-indigo-700 rounded-md">
@@ -186,13 +183,11 @@
                                 </a>
                             </div>
 
-                            <!-- 屋齡 -->
                             <div>
                                 <label class="block text-xs font-medium text-slate-600 mb-1">屋齡 (年)</label>
                                 <input type="number" step="0.1" id="field-age" oninput="autoSave()" placeholder="例如: 15.5" class="w-full text-sm p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                             </div>
 
-                            <!-- 屋主刊登與紀錄時間 -->
                             <div>
                                 <label class="block text-xs font-medium text-slate-600 mb-1">物件上架刊登日期</label>
                                 <input type="date" id="field-listingDate" onchange="onListingDateChange()" class="w-full text-sm p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
@@ -269,7 +264,6 @@
                         </h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <!-- 樓層 -->
                             <div>
                                 <label class="block text-xs font-medium text-slate-600 mb-1">樓層 (所在的樓層 / 總樓層)</label>
                                 <div class="flex items-center gap-2">
@@ -280,7 +274,6 @@
                                 </div>
                             </div>
 
-                            <!-- 幾房幾廳幾衛 -->
                             <div>
                                 <label class="block text-xs font-medium text-slate-600 mb-1">格局配置</label>
                                 <div class="grid grid-cols-3 gap-2">
@@ -300,7 +293,6 @@
                             </div>
                         </div>
 
-                        <!-- 勾選配備 -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
                             <label class="flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-700">
                                 <input type="checkbox" id="field-hasFrontBalcony" onchange="autoSave()" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
@@ -377,15 +369,12 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                            <!-- 圖表 -->
                             <div class="md:col-span-7 h-48">
                                 <canvas id="priceHistoryChart"></canvas>
                             </div>
-                            <!-- 歷史列表 -->
                             <div class="md:col-span-5 border-l border-slate-100 pl-0 md:pl-4">
                                 <div class="text-xs font-semibold text-slate-500 mb-2">調價歷史明細</div>
                                 <div id="price-history-list" class="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar text-xs">
-                                    <!-- 動態渲染歷史紀錄 -->
                                 </div>
                             </div>
                         </div>
@@ -399,7 +388,7 @@
                                     <i class="fa-solid fa-images text-indigo-600"></i> 現場實景相簿
                                     <span id="photo-count-badge" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-normal">0 張</span>
                                 </h3>
-                                <p class="text-xs text-slate-400 mt-0.5">您可以直接在頁面上按下 <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-slate-700 font-mono">Ctrl + V</kbd> 貼上剪貼簿中的螢幕截圖！</p>
+                                <p class="text-xs text-slate-400 mt-0.5">可以直接在頁面上按下 <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-slate-700 font-mono">Ctrl + V</kbd> 貼上剪貼簿截圖！</p>
                             </div>
 
                             <div class="flex items-center gap-2">
@@ -413,9 +402,7 @@
                             </div>
                         </div>
 
-                        <!-- 照片網格列表 -->
                         <div id="photo-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 min-h-[120px]">
-                            <!-- 動態渲染照片 -->
                         </div>
                     </div>
 
@@ -451,20 +438,20 @@
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 select-none">
-                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('address')">房屋地址 <i class="fa-solid fa-sort text-slate-400"></i></th>
-                                <th class="p-3 cursor-pointer hover:bg-slate-200 text-right" onclick="sortTable('totalPrice')">開價 (萬) <i class="fa-solid fa-sort text-slate-400"></i></th>
-                                <th class="p-3 cursor-pointer hover:bg-slate-200 text-right" onclick="sortTable('ping')">坪數 <i class="fa-solid fa-sort text-slate-400"></i></th>
-                                <th class="p-3 cursor-pointer hover:bg-slate-200 text-right" onclick="sortTable('unitPrice')">單價 (萬/坪) <i class="fa-solid fa-sort text-slate-400"></i></th>
-                                <th class="p-3 cursor-pointer hover:bg-slate-200 text-center" onclick="sortTable('distance')">距太順街 <i class="fa-solid fa-sort text-slate-400"></i></th>
-                                <th class="p-3 text-center">格局</th>
-                                <th class="p-3 text-center">屋齡</th>
-                                <th class="p-3 text-center">在售天數</th>
-                                <th class="p-3 text-center">狀態</th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('status')">狀態 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('address')">房屋地址 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('totalPrice')">開價 (萬) <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('unitPrice')">單價 (萬/坪) <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('ping')">坪數 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('age')">屋齡 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('floor')">樓層 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('distance')">距離太順街 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3 cursor-pointer hover:bg-slate-200" onclick="sortTable('days')">滯留天數 <i class="fa-solid fa-sort text-slate-400 ml-1"></i></th>
+                                <th class="p-3">仲介/聯絡人</th>
                                 <th class="p-3 text-center">操作</th>
                             </tr>
                         </thead>
-                        <tbody id="property-table-body" class="divide-y divide-slate-100">
-                            <!-- 動態渲染總覽表 -->
+                        <tbody id="table-view-tbody" class="divide-y divide-slate-200">
                         </tbody>
                     </table>
                 </div>
@@ -473,26 +460,20 @@
 
     </main>
 
-    <!-- 自訂訊息對話框 (取代 alert) -->
-    <div id="custom-modal" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-xl border border-slate-100 text-center">
-            <div id="modal-icon" class="text-indigo-600 text-4xl mb-3">
-                <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <h3 id="modal-title" class="font-bold text-slate-900 text-base mb-1">提示訊息</h3>
-            <p id="modal-message" class="text-xs text-slate-600 mb-5">訊息內容...</p>
-            <div id="modal-buttons" class="flex justify-center gap-2">
-                <button onclick="closeModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2 rounded-xl transition">確定</button>
-            </div>
-        </div>
+    <!-- 照片全螢幕預覽 Modal -->
+    <div id="photo-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
+        <button onclick="closePhotoModal()" class="absolute top-4 right-4 text-white text-3xl hover:text-slate-300 p-2">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="photo-modal-img" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg">
     </div>
 
-    <!-- Firebase SDK (v10.8.0 Standard ES Modules) -->
+    <!-- Firebase SDK (ES Module) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // 整合使用者全新的 Firebase 專案配置 (house-app-42b1d)
+        // Firebase 專案配置 (已整合您的 databaseURL)
         const firebaseConfig = {
             apiKey: "AIzaSyBfpizaAP2aJgx07EtaNgdXgrtB51PTpi4",
             authDomain: "house-app-42b1d.firebaseapp.com",
@@ -504,163 +485,94 @@
             databaseURL: "https://house-app-42b1d-default-rtdb.firebaseio.com"
         };
 
-        // 初始化 Firebase 與 Realtime Database
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const propertiesRef = ref(db, 'house_properties');
 
-        let properties = [];
-        let currentPropertyId = null;
-        let priceHistoryChart = null;
-        let currentSortField = 'totalPrice';
-        let sortAscending = true;
-        let dataRef = ref(db, 'house_properties');
+        // 全域變數
+        window.properties = {};
+        window.currentId = null;
+        window.priceChart = null;
+        window.sortState = { key: 'createdDate', asc: false };
 
-        window.onload = function() {
-            updateSyncStatus("雲端連線中...");
-
-            // 實時監聽 Firebase 資料庫變化（手機與電腦同步的核心機制）
-            onValue(dataRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    properties = Array.isArray(data) ? data : Object.values(data);
-                } else {
-                    // 若雲端庫無資料，預設一筆範例資料並初始寫入雲端
-                    properties = [{
-                        id: 'prop-' + Date.now(),
-                        address: '新北市樹林區中山路一段123號',
-                        age: 18.5,
-                        listingDate: '2026-01-15',
-                        createdDate: '2026-03-01',
-                        ping: 32.5,
-                        totalPrice: 1680,
-                        floorCurrent: 5,
-                        floorTotal: 12,
-                        room: 3,
-                        hall: 2,
-                        bath: 2,
-                        hasFrontBalcony: true,
-                        hasRearBalcony: true,
-                        hasGas: true,
-                        agentCompany: '信義房屋',
-                        agentName: '陳專員 0912-345678',
-                        agencyType: '一般委託',
-                        pros: '採光佳、採光通風好、近樹林火車站。',
-                        cons: '臨主幹道噪音較大，需整理裝潢。',
-                        notes: '屋主誠意急售，預計本週二次帶家人看房。',
-                        isSold: false,
-                        soldPrice: '',
-                        discount: 80,
-                        priceHistory: [
-                            { date: '2026-01-15', price: 1780 },
-                            { date: '2026-02-10', price: 1680 }
-                        ],
-                        photos: []
-                    }];
-                    syncToFirebase();
-                }
-
-                if (!currentPropertyId && properties.length > 0) {
-                    currentPropertyId = properties[0].id;
-                }
-
-                renderPropertyList();
-                if (currentPropertyId) {
-                    loadPropertyToForm(currentPropertyId);
-                }
-                renderTable();
-                updateSyncStatus("雲端已同步 (即時連線中)");
-            }, (error) => {
-                console.error("Firebase 連線錯誤:", error);
-                updateSyncStatus("離線模式 (載入本機備份)");
-                loadLocalStorageFallback();
-            });
-
-            initChart();
-            setupClipboardListener();
-        };
-
-        function loadLocalStorageFallback() {
-            const localData = localStorage.getItem('house_note_fallback');
-            if (localData) {
-                try {
-                    properties = JSON.parse(localData);
-                    if (properties.length > 0 && !currentPropertyId) {
-                        currentPropertyId = properties[0].id;
-                    }
-                    renderPropertyList();
-                    if (currentPropertyId) loadPropertyToForm(currentPropertyId);
-                    renderTable();
-                } catch(e) {}
-            }
-        }
-
-        function syncToFirebase() {
-            updateSyncStatus("資料同步中...");
-            set(dataRef, properties).then(() => {
-                updateSyncStatus("雲端已同步 (即時連線中)");
-            }).catch(err => {
-                console.error("寫入 Firebase 失敗:", err);
-                updateSyncStatus("同步失敗 (嘗試離線儲存)");
-            });
-            localStorage.setItem('house_note_fallback', JSON.stringify(properties));
-        }
-
-        window.autoSave = function() {
-            if (!currentPropertyId) return;
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (!prop) return;
-
-            prop.address = document.getElementById('field-address').value;
-            prop.age = parseFloat(document.getElementById('field-age').value) || 0;
-            prop.listingDate = document.getElementById('field-listingDate').value;
-            prop.ping = parseFloat(document.getElementById('field-ping').value) || 0;
-            prop.totalPrice = parseFloat(document.getElementById('field-totalPrice').value) || 0;
-            prop.floorCurrent = parseInt(document.getElementById('field-floorCurrent').value) || '';
-            prop.floorTotal = parseInt(document.getElementById('field-floorTotal').value) || '';
-            prop.room = parseInt(document.getElementById('field-room').value) || '';
-            prop.hall = parseInt(document.getElementById('field-hall').value) || '';
-            prop.bath = parseInt(document.getElementById('field-bath').value) || '';
-            prop.hasFrontBalcony = document.getElementById('field-hasFrontBalcony').checked;
-            prop.hasRearBalcony = document.getElementById('field-hasRearBalcony').checked;
-            prop.hasGas = document.getElementById('field-hasGas').checked;
-            prop.agentCompany = document.getElementById('field-agentCompany').value;
-            prop.agentName = document.getElementById('field-agentName').value;
-            prop.agencyType = document.getElementById('field-agencyType').value;
-            prop.pros = document.getElementById('field-pros').value;
-            prop.cons = document.getElementById('field-cons').value;
-            prop.notes = document.getElementById('field-notes').value;
-            prop.isSold = document.getElementById('field-isSold').checked;
-            prop.soldPrice = parseFloat(document.getElementById('field-soldPrice').value) || '';
-            prop.discount = parseInt(document.getElementById('field-discountRange').value) || 80;
-
-            calculatePrices();
-            calculateDistance(prop.address);
-            calculateDaysOnMarket(prop.listingDate);
-
-            document.getElementById('display-address-header').innerText = prop.address || '未命名地址物件';
+        // 監聽雲端資料變更 (自動實時同步)
+        onValue(propertiesRef, (snapshot) => {
+            const data = snapshot.val();
+            window.properties = data || {};
+            
+            // 更新介面
             renderPropertyList();
-            renderTable();
-            syncToFirebase();
+            renderTableView();
+            updateDatalists();
+            
+            if (window.currentId && window.properties[window.currentId]) {
+                loadPropertyToForm(window.currentId, false);
+            } else if (!window.currentId && Object.keys(window.properties).length > 0) {
+                const firstId = Object.keys(window.properties)[0];
+                loadPropertyToForm(firstId, false);
+            } else if (Object.keys(window.properties).length === 0) {
+                showNoPropertySelected();
+            }
+
+            document.getElementById('sync-text').innerText = '雲端即時同步中';
+            document.getElementById('save-status').className = 'text-xs text-emerald-400 opacity-100 transition-opacity duration-300 flex items-center gap-1';
+        });
+
+        // 儲存至雲端
+        window.saveToCloud = function() {
+            if (!window.currentId) return;
+            document.getElementById('sync-text').innerText = '同步中...';
+            set(propertiesRef, window.properties).then(() => {
+                document.getElementById('sync-text').innerText = '已同步至雲端';
+            }).catch((err) => {
+                console.error("Save error:", err);
+                document.getElementById('sync-text').innerText = '同步失敗';
+            });
         };
 
+        // UI 檢視切換
+        window.switchView = function(view) {
+            const btnEditor = document.getElementById('btn-view-editor');
+            const btnTable = document.getElementById('btn-view-table');
+            const viewEditor = document.getElementById('view-editor');
+            const viewTable = document.getElementById('view-table');
+
+            if (view === 'editor') {
+                viewEditor.classList.remove('hidden');
+                viewTable.classList.add('hidden');
+                btnEditor.className = "px-3 py-1.5 rounded-md font-medium text-white bg-indigo-600 transition flex items-center gap-1.5";
+                btnTable.className = "px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition flex items-center gap-1.5";
+            } else {
+                viewEditor.classList.add('hidden');
+                viewTable.classList.remove('hidden');
+                viewTable.classList.add('flex');
+                btnTable.className = "px-3 py-1.5 rounded-md font-medium text-white bg-indigo-600 transition flex items-center gap-1.5";
+                btnEditor.className = "px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition flex items-center gap-1.5";
+                renderTableView();
+            }
+        };
+
+        // 新增物件
         window.createNewProperty = function() {
-            const today = new Date().toISOString().split('T')[0];
-            const newProp = {
-                id: 'prop-' + Date.now(),
-                address: '新北市樹林區太順街新物件',
-                age: 0,
-                listingDate: today,
-                createdDate: today,
-                ping: 30,
-                totalPrice: 1500,
-                floorCurrent: 3,
-                floorTotal: 10,
-                room: 3,
-                hall: 2,
-                bath: 2,
-                hasFrontBalcony: true,
-                hasRearBalcony: true,
-                hasGas: true,
+            const newId = 'prop_' + Date.now();
+            const todayStr = new Date().toISOString().split('T')[0];
+            window.properties[newId] = {
+                id: newId,
+                address: '',
+                age: '',
+                listingDate: todayStr,
+                createdDate: todayStr,
+                ping: '',
+                totalPrice: '',
+                discountRange: 80,
+                floorCurrent: '',
+                floorTotal: '',
+                room: '',
+                hall: '',
+                bath: '',
+                hasFrontBalcony: false,
+                hasRearBalcony: false,
+                hasGas: false,
                 agentCompany: '',
                 agentName: '',
                 agencyType: '一般委託',
@@ -669,206 +581,107 @@
                 notes: '',
                 isSold: false,
                 soldPrice: '',
-                discount: 80,
-                priceHistory: [{ date: today, price: 1500 }],
+                priceHistory: [{ date: todayStr, price: '' }],
                 photos: []
             };
-            properties.unshift(newProp);
-            currentPropertyId = newProp.id;
-            renderPropertyList();
-            loadPropertyToForm(currentPropertyId);
-            renderTable();
-            syncToFirebase();
+            window.currentId = newId;
+            window.saveToCloud();
+            loadPropertyToForm(newId, true);
         };
 
-        window.deleteCurrentProperty = function() {
-            if (properties.length <= 1) {
-                showModal("無法刪除", "系統需至少保留一筆物件紀錄！");
-                return;
-            }
-            properties = properties.filter(p => p.id !== currentPropertyId);
-            currentPropertyId = properties[0].id;
-            renderPropertyList();
-            loadPropertyToForm(currentPropertyId);
-            renderTable();
-            syncToFirebase();
-        };
-
-        window.selectProperty = function(id) {
-            currentPropertyId = id;
-            renderPropertyList();
-            loadPropertyToForm(id);
-        };
-
-        function loadPropertyToForm(id) {
-            const prop = properties.find(p => p.id === id);
-            if (!prop) return;
+        // 載入物件至表單
+        window.loadPropertyToForm = function(id, focusAddress = false) {
+            window.currentId = id;
+            const p = window.properties[id];
+            if (!p) return;
 
             document.getElementById('no-property-selected').classList.add('hidden');
             document.getElementById('property-form-container').classList.remove('hidden');
 
-            document.getElementById('display-address-header').innerText = prop.address || '未命名地址物件';
-            document.getElementById('field-address').value = prop.address || '';
-            document.getElementById('field-age').value = prop.age || '';
-            document.getElementById('field-listingDate').value = prop.listingDate || '';
-            document.getElementById('field-createdDateDisplay').innerText = prop.createdDate || '--';
-            document.getElementById('field-ping').value = prop.ping || '';
-            document.getElementById('field-totalPrice').value = prop.totalPrice || '';
-            document.getElementById('field-floorCurrent').value = prop.floorCurrent || '';
-            document.getElementById('field-floorTotal').value = prop.floorTotal || '';
-            document.getElementById('field-room').value = prop.room || '';
-            document.getElementById('field-hall').value = prop.hall || '';
-            document.getElementById('field-bath').value = prop.bath || '';
-            document.getElementById('field-hasFrontBalcony').checked = !!prop.hasFrontBalcony;
-            document.getElementById('field-hasRearBalcony').checked = !!prop.hasRearBalcony;
-            document.getElementById('field-hasGas').checked = !!prop.hasGas;
-            document.getElementById('field-agentCompany').value = prop.agentCompany || '';
-            document.getElementById('field-agentName').value = prop.agentName || '';
-            document.getElementById('field-agencyType').value = prop.agencyType || '一般委託';
-            document.getElementById('field-pros').value = prop.pros || '';
-            document.getElementById('field-cons').value = prop.cons || '';
-            document.getElementById('field-notes').value = prop.notes || '';
-            document.getElementById('field-isSold').checked = !!prop.isSold;
-            document.getElementById('field-soldPrice').value = prop.soldPrice || '';
-            document.getElementById('field-discountRange').value = prop.discount || 80;
+            document.getElementById('display-address-header').innerText = p.address || '（未輸入地址）';
+            document.getElementById('field-address').value = p.address || '';
+            document.getElementById('field-age').value = p.age || '';
+            document.getElementById('field-listingDate').value = p.listingDate || '';
+            document.getElementById('field-createdDateDisplay').innerText = p.createdDate || '--';
 
-            handleSoldToggle();
+            document.getElementById('field-ping').value = p.ping || '';
+            document.getElementById('field-totalPrice').value = p.totalPrice || '';
+            document.getElementById('field-discountRange').value = p.discountRange || 80;
+
+            document.getElementById('field-floorCurrent').value = p.floorCurrent || '';
+            document.getElementById('field-floorTotal').value = p.floorTotal || '';
+            document.getElementById('field-room').value = p.room || '';
+            document.getElementById('field-hall').value = p.hall || '';
+            document.getElementById('field-bath').value = p.bath || '';
+            document.getElementById('field-hasFrontBalcony').checked = !!p.hasFrontBalcony;
+            document.getElementById('field-hasRearBalcony').checked = !!p.hasRearBalcony;
+            document.getElementById('field-hasGas').checked = !!p.hasGas;
+
+            document.getElementById('field-agentCompany').value = p.agentCompany || '';
+            document.getElementById('field-agentName').value = p.agentName || '';
+            document.getElementById('field-agencyType').value = p.agencyType || '一般委託';
+
+            document.getElementById('field-pros').value = p.pros || '';
+            document.getElementById('field-cons').value = p.cons || '';
+            document.getElementById('field-notes').value = p.notes || '';
+
+            document.getElementById('field-isSold').checked = !!p.isSold;
+            document.getElementById('field-soldPrice').value = p.soldPrice || '';
+            handleSoldToggle(false);
+
             calculatePrices();
-            calculateDistance(prop.address);
-            calculateDaysOnMarket(prop.listingDate);
+            calculateDistance(p.address);
+            calculateDaysOnMarket(p.listingDate);
             renderPriceHistory();
-            renderPhotos();
+            renderPhotoGrid();
+            renderPropertyList();
+
+            if (focusAddress) {
+                document.getElementById('field-address').focus();
+            }
+        };
+
+        function showNoPropertySelected() {
+            window.currentId = null;
+            document.getElementById('no-property-selected').classList.remove('hidden');
+            document.getElementById('property-form-container').classList.add('hidden');
         }
 
-        window.renderPropertyList = function() {
-            const container = document.getElementById('property-list-container');
-            const searchKeyword = (document.getElementById('search-input').value || '').toLowerCase();
-            
-            const filtered = properties.filter(p => {
-                const text = ((p.address||'') + ' ' + (p.agentCompany||'') + ' ' + (p.agentName||'') + ' ' + (p.notes||'')).toLowerCase();
-                return text.includes(searchKeyword);
-            });
+        // 自動儲存表單資料
+        window.autoSave = function() {
+            if (!window.currentId || !window.properties[window.currentId]) return;
+            const p = window.properties[window.currentId];
 
-            document.getElementById('property-count').innerText = `${filtered.length} 筆`;
+            p.address = document.getElementById('field-address').value;
+            p.age = document.getElementById('field-age').value;
+            p.listingDate = document.getElementById('field-listingDate').value;
+            p.ping = document.getElementById('field-ping').value;
+            p.totalPrice = document.getElementById('field-totalPrice').value;
+            p.discountRange = document.getElementById('field-discountRange').value;
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">沒有找到符合條件的物件</div>`;
-                return;
-            }
+            p.floorCurrent = document.getElementById('field-floorCurrent').value;
+            p.floorTotal = document.getElementById('field-floorTotal').value;
+            p.room = document.getElementById('field-room').value;
+            p.hall = document.getElementById('field-hall').value;
+            p.bath = document.getElementById('field-bath').value;
+            p.hasFrontBalcony = document.getElementById('field-hasFrontBalcony').checked;
+            p.hasRearBalcony = document.getElementById('field-hasRearBalcony').checked;
+            p.hasGas = document.getElementById('field-hasGas').checked;
 
-            container.innerHTML = filtered.map(p => {
-                const isSelected = p.id === currentPropertyId;
-                const unitPrice = p.ping > 0 ? (p.totalPrice / p.ping).toFixed(1) : 0;
-                return `
-                    <div onclick="selectProperty('${p.id}')" class="p-3 rounded-xl border cursor-pointer transition ${isSelected ? 'bg-indigo-50/80 border-indigo-300 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300'}">
-                        <div class="flex justify-between items-start gap-2 mb-1">
-                            <div class="font-bold text-xs text-slate-900 truncate flex-1">${p.address || '未命名地址'}</div>
-                            ${p.isSold ? '<span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] rounded font-semibold whitespace-nowrap">已售出</span>' : ''}
-                        </div>
-                        <div class="flex justify-between items-center text-xs text-slate-600">
-                            <span class="font-extrabold text-indigo-700">${p.totalPrice || 0} 萬 <span class="font-normal text-[10px] text-slate-500">(${unitPrice}萬/坪)</span></span>
-                            <span class="text-[10px] text-slate-400">${p.ping || 0} 坪</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        };
+            p.agentCompany = document.getElementById('field-agentCompany').value;
+            p.agentName = document.getElementById('field-agentName').value;
+            p.agencyType = document.getElementById('field-agencyType').value;
 
-        window.calculatePrices = function() {
-            const ping = parseFloat(document.getElementById('field-ping').value) || 0;
-            const totalPrice = parseFloat(document.getElementById('field-totalPrice').value) || 0;
-            const discount = parseInt(document.getElementById('field-discountRange').value) || 80;
+            p.pros = document.getElementById('field-pros').value;
+            p.cons = document.getElementById('field-cons').value;
+            p.notes = document.getElementById('field-notes').value;
 
-            const unitPriceElem = document.getElementById('calc-unitPrice');
-            if (ping > 0) {
-                unitPriceElem.value = (totalPrice / ping).toFixed(1) + ' 萬/坪';
-            } else {
-                unitPriceElem.value = '-- 萬/坪';
-            }
+            p.isSold = document.getElementById('field-isSold').checked;
+            p.soldPrice = document.getElementById('field-soldPrice').value;
 
-            const offerPrice = Math.round(totalPrice * (discount / 100));
-            const offerUnitPrice = ping > 0 ? (offerPrice / ping).toFixed(1) : 0;
-            const saved = totalPrice - offerPrice;
+            document.getElementById('display-address-header').innerText = p.address || '（未輸入地址）';
 
-            document.getElementById('calc-offerPrice').innerText = offerPrice + ' 萬元';
-            document.getElementById('calc-offerUnitPrice').innerText = offerUnitPrice + ' 萬/坪';
-            document.getElementById('calc-savedAmount').innerText = `省 ${saved} 萬元`;
-
-            // 計算成交數據（若勾選已售出）
-            const soldPrice = parseFloat(document.getElementById('field-soldPrice').value) || 0;
-            if (soldPrice > 0 && ping > 0) {
-                document.getElementById('calc-soldUnitPrice').value = (soldPrice / ping).toFixed(1) + ' 萬/坪';
-                const firstPrice = properties.find(p => p.id === currentPropertyId)?.priceHistory?.[0]?.price || totalPrice;
-                if (firstPrice > 0) {
-                    const disc = ((soldPrice / firstPrice) * 10).toFixed(1);
-                    document.getElementById('calc-soldDiscount').value = `${disc} 折 (${(soldPrice/firstPrice*100).toFixed(0)}%)`;
-                }
-            }
-        };
-
-        window.updateDiscountCalc = function() {
-            const val = document.getElementById('field-discountRange').value;
-            document.getElementById('discount-label').innerText = `${val} 折 (${val/10} 折)`;
-            calculatePrices();
-            autoSave();
-        };
-
-        window.handleSoldToggle = function() {
-            const isSold = document.getElementById('field-isSold').checked;
-            const soldSection = document.getElementById('sold-info-section');
-            if (isSold) {
-                soldSection.classList.remove('hidden');
-            } else {
-                soldSection.classList.add('hidden');
-            }
-            autoSave();
-        };
-
-        window.calculateDistance = function(address) {
-            const resultElem = document.getElementById('distance-result');
-            const mapBtn = document.getElementById('btn-google-maps');
-            const baseAddr = "新北市樹林區太順街48號";
-
-            if (!address || address.length < 4) {
-                resultElem.innerText = '請輸入完整地址以估算距離...';
-                mapBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(baseAddr)}`;
-                return;
-            }
-
-            // 精確模擬樹林區太順街48號距離計算邏輯
-            let distKm = 1.5;
-            if (address.includes('太順街')) {
-                distKm = 0.1;
-            } else if (address.includes('樹林區')) {
-                distKm = 0.5 + (Math.abs(address.hashCode() % 20) / 10);
-            } else if (address.includes('板橋區') || address.includes('新莊區')) {
-                distKm = 3.5 + (Math.abs(address.hashCode() % 30) / 10);
-            } else {
-                distKm = 6.0 + (Math.abs(address.hashCode() % 50) / 10);
-            }
-
-            const walkMinutes = Math.max(1, Math.round(distKm * 13));
-            resultElem.innerText = `直線距離約 ${distKm.toFixed(1)} 公里 (步行約 ${walkMinutes} 分鐘)`;
-            mapBtn.href = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(baseAddr)}&destination=${encodeURIComponent(address)}&travelmode=walking`;
-        };
-
-        window.calculateDaysOnMarket = function(listingDate) {
-            const daysElem = document.getElementById('calc-daysOnMarket');
-            if (!listingDate) {
-                daysElem.innerText = '0';
-                return;
-            }
-            const start = new Date(listingDate);
-            const now = new Date();
-            const diffTime = Math.abs(now - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            daysElem.innerText = isNaN(diffDays) ? '0' : diffDays;
-        };
-
-        window.onListingDateChange = function() {
-            const date = document.getElementById('field-listingDate').value;
-            calculateDaysOnMarket(date);
-            autoSave();
+            window.saveToCloud();
         };
 
         window.onAddressInput = function() {
@@ -877,26 +690,178 @@
             autoSave();
         };
 
-        // 價格趨勢圖表
-        function initChart() {
+        window.onListingDateChange = function() {
+            const dateVal = document.getElementById('field-listingDate').value;
+            calculateDaysOnMarket(dateVal);
+            autoSave();
+        };
+
+        window.handleSoldToggle = function(shouldSave = true) {
+            const isSold = document.getElementById('field-isSold').checked;
+            const soldSection = document.getElementById('sold-info-section');
+            if (isSold) {
+                soldSection.classList.remove('hidden');
+            } else {
+                soldSection.classList.add('hidden');
+            }
+            if (shouldSave) autoSave();
+        };
+
+        // 刪除目前物件
+        window.deleteCurrentProperty = function() {
+            if (!window.currentId) return;
+            if (confirm("確定要刪除此筆看房紀錄嗎？刪除後無法恢復。")) {
+                delete window.properties[window.currentId];
+                window.currentId = null;
+                window.saveToCloud();
+            }
+        };
+
+        // 距離與導航計算 (樹林區太順街48號)
+        function calculateDistance(address) {
+            const resEl = document.getElementById('distance-result');
+            const mapsBtn = document.getElementById('btn-google-maps');
+            const originStr = "新北市樹林區太順街48號";
+
+            if (!address || address.trim() === '') {
+                resEl.innerText = "請輸入有效完整地址以計算距離...";
+                mapsBtn.href = "#";
+                return;
+            }
+
+            mapsBtn.href = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(originStr)}&destination=${encodeURIComponent(address)}&travelmode=walking`;
+
+            if (address.includes("太順街")) {
+                resEl.innerText = "同在太順街！步行約 1 ~ 3 分鐘 (100-300公尺)";
+            } else if (address.includes("樹林區") || address.includes("樹林")) {
+                resEl.innerText = "鄰近樹林區域，步行約 5 ~ 15 分鐘 (約 500m - 1.2km)";
+            } else {
+                resEl.innerText = "不同路段，建議點擊右側開啟 Google Maps 查看精確距離";
+            }
+        }
+
+        function calculateDaysOnMarket(listingDateStr) {
+            const el = document.getElementById('calc-daysOnMarket');
+            if (!listingDateStr) {
+                el.innerText = '0';
+                return;
+            }
+            const lDate = new Date(listingDateStr);
+            const now = new Date();
+            const diffTime = Math.abs(now - lDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            el.innerText = isNaN(diffDays) ? '0' : diffDays;
+        }
+
+        // 價格與折數試算
+        window.calculatePrices = function() {
+            const ping = parseFloat(document.getElementById('field-ping').value) || 0;
+            const total = parseFloat(document.getElementById('field-totalPrice').value) || 0;
+
+            const unitPriceEl = document.getElementById('calc-unitPrice');
+            if (ping > 0 && total > 0) {
+                unitPriceEl.value = (total / ping).toFixed(2) + " 萬/坪";
+            } else {
+                unitPriceEl.value = "-- 萬/坪";
+            }
+
+            // 成交延伸試算
+            const soldPrice = parseFloat(document.getElementById('field-soldPrice').value) || 0;
+            const soldUnitEl = document.getElementById('calc-soldUnitPrice');
+            const soldDiscountEl = document.getElementById('calc-soldDiscount');
+            if (soldPrice > 0 && ping > 0) {
+                soldUnitEl.value = (soldPrice / ping).toFixed(2) + " 萬/坪";
+            } else {
+                soldUnitEl.value = "-- 萬/坪";
+            }
+            if (soldPrice > 0 && total > 0) {
+                soldDiscountEl.value = ((soldPrice / total) * 10).toFixed(1) + " 折";
+            } else {
+                soldDiscountEl.value = "-- 折";
+            }
+
+            updateDiscountCalc();
+            autoSave();
+        };
+
+        window.updateDiscountCalc = function() {
+            const discountVal = parseInt(document.getElementById('field-discountRange').value) || 80;
+            document.getElementById('discount-label').innerText = `${discountVal} 折 (${(discountVal/10).toFixed(1)} 折)`;
+
+            const total = parseFloat(document.getElementById('field-totalPrice').value) || 0;
+            const ping = parseFloat(document.getElementById('field-ping').value) || 0;
+
+            const offerPrice = Math.round(total * (discountVal / 100));
+            const savedAmount = total - offerPrice;
+
+            document.getElementById('calc-offerPrice').innerText = offerPrice > 0 ? `${offerPrice} 萬元` : '0 萬元';
+            document.getElementById('calc-savedAmount').innerText = savedAmount > 0 ? `省 ${savedAmount} 萬元` : '省 0 萬元';
+
+            if (offerPrice > 0 && ping > 0) {
+                document.getElementById('calc-offerUnitPrice').innerText = (offerPrice / ping).toFixed(2) + " 萬/坪";
+            } else {
+                document.getElementById('calc-offerUnitPrice').innerText = "0 萬/坪";
+            }
+        };
+
+        // 調價歷史管理
+        window.addPriceHistoryModal = function() {
+            if (!window.currentId) return;
+            const p = window.properties[window.currentId];
+            const price = prompt("請輸入調整後的開價金額 (萬元):", p.totalPrice || "");
+            if (price !== null && price.trim() !== "") {
+                if (!p.priceHistory) p.priceHistory = [];
+                const todayStr = new Date().toISOString().split('T')[0];
+                p.priceHistory.push({ date: todayStr, price: price.trim() });
+                p.totalPrice = price.trim();
+                document.getElementById('field-totalPrice').value = price.trim();
+                calculatePrices();
+                renderPriceHistory();
+                window.saveToCloud();
+            }
+        };
+
+        function renderPriceHistory() {
+            if (!window.currentId) return;
+            const p = window.properties[window.currentId];
+            const listEl = document.getElementById('price-history-list');
+            listEl.innerHTML = '';
+
+            const history = p.priceHistory || [];
+            history.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200";
+                div.innerHTML = `
+                    <span><i class="fa-regular fa-calendar-check text-slate-400 mr-1"></i>${item.date}</span>
+                    <span class="font-bold text-slate-700">${item.price} 萬元</span>
+                `;
+                listEl.appendChild(div);
+            });
+
+            // 圖表渲染
             const ctx = document.getElementById('priceHistoryChart').getContext('2d');
-            priceHistoryChart = new Chart(ctx, {
+            if (window.priceChart) window.priceChart.destroy();
+
+            const labels = history.map(h => h.date);
+            const dataVals = history.map(h => parseFloat(h.price) || 0);
+
+            window.priceChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: [],
+                    labels: labels.length ? labels : ['尚未有歷史紀錄'],
                     datasets: [{
-                        label: '開價趨勢 (萬元)',
-                        data: [],
+                        label: '開價趨勢 (萬)',
+                        data: dataVals.length ? dataVals : [0],
                         borderColor: '#4f46e5',
                         backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.2,
-                        fill: true
+                        fill: true,
+                        tension: 0.2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: false }
                     }
@@ -904,282 +869,241 @@
             });
         }
 
-        window.renderPriceHistory = function() {
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (!prop) return;
-            if (!prop.priceHistory) prop.priceHistory = [];
-
-            const listElem = document.getElementById('price-history-list');
-            listElem.innerHTML = prop.priceHistory.map((h, index) => `
-                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
-                    <span class="text-slate-500">${h.date}</span>
-                    <span class="font-bold text-indigo-700">${h.price} 萬元</span>
-                    <button onclick="deletePriceHistory(${index})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            `).join('');
-
-            if (priceHistoryChart) {
-                priceHistoryChart.data.labels = prop.priceHistory.map(h => h.date);
-                priceHistoryChart.data.datasets[0].data = prop.priceHistory.map(h => h.price);
-                priceHistoryChart.update();
+        // 剪貼簿截圖與照片管理
+        document.addEventListener('paste', function (e) {
+            if (!window.currentId) return;
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        savePhoto(event.target.result);
+                    };
+                    reader.readAsDataURL(blob);
+                }
             }
-        };
-
-        window.addPriceHistoryModal = function() {
-            const price = prompt("請輸入當時或調整後的總價 (萬元)：");
-            if (!price) return;
-            const date = prompt("請輸入調價日期 (YYYY-MM-DD)：", new Date().toISOString().split('T')[0]);
-            
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (prop) {
-                if (!prop.priceHistory) prop.priceHistory = [];
-                prop.priceHistory.push({ date: date || new Date().toISOString().split('T')[0], price: parseFloat(price) || 0 });
-                renderPriceHistory();
-                autoSave();
-            }
-        };
-
-        window.deletePriceHistory = function(index) {
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (prop && prop.priceHistory) {
-                prop.priceHistory.splice(index, 1);
-                renderPriceHistory();
-                autoSave();
-            }
-        };
-
-        // 照片上傳與剪貼簿貼上
-        window.handleFileUpload = function(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (!prop) return;
-            if (!prop.photos) prop.photos = [];
-
-            for (let file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    prop.photos.push(e.target.result);
-                    renderPhotos();
-                    autoSave();
-                };
-                reader.readAsDataURL(file);
-            }
-        };
+        });
 
         window.pasteFromClipboard = async function() {
+            if (!window.currentId) return;
             try {
                 const clipboardItems = await navigator.clipboard.read();
-                for (const item of clipboardItems) {
-                    for (const type of item.types) {
+                for (const clipboardItem of clipboardItems) {
+                    for (const type of clipboardItem.types) {
                         if (type.startsWith('image/')) {
-                            const blob = await item.getType(type);
+                            const blob = await clipboardItem.getType(type);
                             const reader = new FileReader();
-                            reader.onload = function(e) {
-                                const prop = properties.find(p => p.id === currentPropertyId);
-                                if (prop) {
-                                    if (!prop.photos) prop.photos = [];
-                                    prop.photos.push(e.target.result);
-                                    renderPhotos();
-                                    autoSave();
-                                    showModal("成功", "已成功從剪貼簿貼上現場截圖！");
-                                }
+                            reader.onload = function (event) {
+                                savePhoto(event.target.result);
                             };
                             reader.readAsDataURL(blob);
-                            return;
                         }
                     }
                 }
-                showModal("提示", "剪貼簿中尚未包含圖片。");
             } catch (err) {
-                showModal("提示", "請直接使用鍵盤按 Ctrl + V 貼上截圖。");
+                alert("請直接按下鍵盤 Ctrl + V 即可將截圖貼上！");
             }
         };
 
-        function setupClipboardListener() {
-            window.addEventListener('paste', e => {
-                if (e.clipboardData && e.clipboardData.items) {
-                    for (let item of e.clipboardData.items) {
-                        if (item.type.indexOf('image') !== -1) {
-                            const blob = item.getAsFile();
-                            const reader = new FileReader();
-                            reader.onload = function(event) {
-                                const prop = properties.find(p => p.id === currentPropertyId);
-                                if (prop) {
-                                    if (!prop.photos) prop.photos = [];
-                                    prop.photos.push(event.target.result);
-                                    renderPhotos();
-                                    autoSave();
-                                }
-                            };
-                            reader.readAsDataURL(blob);
-                        }
-                    }
-                }
-            });
+        window.handleFileUpload = function(e) {
+            if (!window.currentId) return;
+            const files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    savePhoto(event.target.result);
+                };
+                reader.readAsDataURL(files[i]);
+            }
+        };
+
+        function savePhoto(base64Data) {
+            const p = window.properties[window.currentId];
+            if (!p.photos) p.photos = [];
+            p.photos.push(base64Data);
+            renderPhotoGrid();
+            window.saveToCloud();
         }
 
-        window.renderPhotos = function() {
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (!prop || !prop.photos) prop.photos = [];
-
-            document.getElementById('photo-count-badge').innerText = `${prop.photos.length} 張`;
+        function renderPhotoGrid() {
+            if (!window.currentId) return;
+            const p = window.properties[window.currentId];
             const grid = document.getElementById('photo-grid');
+            const badge = document.getElementById('photo-count-badge');
+            grid.innerHTML = '';
 
-            if (prop.photos.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 text-xs">尚未上傳或貼上任何照片</div>`;
+            const photos = p.photos || [];
+            badge.innerText = `${photos.length} 張`;
+
+            if (photos.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center text-slate-400 py-6 text-xs bg-slate-50 rounded-lg border border-dashed border-slate-200">尚無現場照片，請貼上剪貼簿截圖或點擊上傳</div>`;
                 return;
             }
 
-            grid.innerHTML = prop.photos.map((src, index) => `
-                <div class="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-50 aspect-video flex items-center justify-center">
-                    <img src="${src}" class="w-full h-full object-cover">
-                    <button onclick="deletePhoto(${index})" class="absolute top-2 right-2 bg-red-600/80 hover:bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition">
-                        <i class="fa-solid fa-xmark"></i>
+            photos.forEach((src, idx) => {
+                const div = document.createElement('div');
+                div.className = "relative group rounded-lg overflow-hidden border border-slate-200 aspect-video bg-slate-100 cursor-pointer";
+                div.innerHTML = `
+                    <img src="${src}" class="w-full h-full object-cover" onclick="openPhotoModal('${src}')">
+                    <button onclick="deletePhoto(${idx})" class="absolute top-1 right-1 bg-red-600/80 hover:bg-red-600 text-white p-1 rounded-md text-xs opacity-0 group-hover:opacity-100 transition">
+                        <i class="fa-solid fa-trash"></i>
                     </button>
-                </div>
-            `).join('');
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        window.deletePhoto = function(idx) {
+            if (!window.currentId) return;
+            const p = window.properties[window.currentId];
+            p.photos.splice(idx, 1);
+            renderPhotoGrid();
+            window.saveToCloud();
         };
 
-        window.deletePhoto = function(index) {
-            const prop = properties.find(p => p.id === currentPropertyId);
-            if (prop && prop.photos) {
-                prop.photos.splice(index, 1);
-                renderPhotos();
-                autoSave();
-            }
+        window.openPhotoModal = function(src) {
+            document.getElementById('photo-modal-img').src = src;
+            document.getElementById('photo-modal').classList.remove('hidden');
         };
 
-        // 頁面與總覽表切換
-        window.switchView = function(viewName) {
-            const editorView = document.getElementById('view-editor');
-            const tableView = document.getElementById('view-table');
-            const btnEditor = document.getElementById('btn-view-editor');
-            const btnTable = document.getElementById('btn-view-table');
-
-            if (viewName === 'editor') {
-                editorView.classList.remove('hidden');
-                editorView.classList.add('grid');
-                tableView.classList.add('hidden');
-                btnEditor.className = "px-3 py-1.5 rounded-md font-medium text-white bg-indigo-600 transition flex items-center gap-1.5";
-                btnTable.className = "px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition flex items-center gap-1.5";
-            } else {
-                editorView.classList.add('hidden');
-                editorView.classList.remove('grid');
-                tableView.classList.remove('hidden');
-                tableView.classList.add('flex');
-                btnTable.className = "px-3 py-1.5 rounded-md font-medium text-white bg-indigo-600 transition flex items-center gap-1.5";
-                btnEditor.className = "px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition flex items-center gap-1.5";
-                renderTable();
-            }
+        window.closePhotoModal = function() {
+            document.getElementById('photo-modal').classList.add('hidden');
         };
 
-        window.renderTable = function() {
-            const tbody = document.getElementById('property-table-body');
-            document.getElementById('table-total-count').innerText = `共 ${properties.length} 筆物件`;
+        // 左側清單渲染與搜尋
+        function renderPropertyList() {
+            const container = document.getElementById('property-list-container');
+            const filterText = document.getElementById('search-input').value.toLowerCase();
+            container.innerHTML = '';
 
-            const sorted = [...properties].sort((a, b) => {
-                let valA = a[currentSortField] || 0;
-                let valB = b[currentSortField] || 0;
-                if (typeof valA === 'string') {
-                    return sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                }
-                return sortAscending ? valA - valB : valB - valA;
+            const keys = Object.keys(window.properties);
+            document.getElementById('property-count').innerText = `${keys.length} 筆`;
+
+            keys.forEach(id => {
+                const p = window.properties[id];
+                const matchAddress = (p.address || '').toLowerCase().includes(filterText);
+                const matchNotes = (p.notes || '').toLowerCase().includes(filterText);
+                const matchAgent = (p.agentName || '').toLowerCase().includes(filterText);
+
+                if (filterText && !matchAddress && !matchNotes && !matchAgent) return;
+
+                const isSelected = id === window.currentId;
+                const card = document.createElement('div');
+                card.onclick = () => loadPropertyToForm(id);
+                card.className = `p-3 rounded-lg border transition cursor-pointer flex flex-col gap-1.5 ${
+                    isSelected ? 'bg-indigo-50 border-indigo-400 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="font-bold text-slate-800 text-sm truncate flex-1">${p.address || '（新物件未命名）'}</div>
+                        ${p.isSold ? '<span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap">已售出</span>' : ''}
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-slate-500">
+                        <span class="font-bold text-indigo-700">${p.totalPrice ? p.totalPrice + ' 萬' : '未開價'}</span>
+                        <span>${p.ping ? p.ping + ' 坪' : '-- 坪'}</span>
+                        <span>${p.room ? p.room + '房' : ''}${p.bath ? p.bath + '衛' : ''}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 總覽表格頁面動態渲染與排序
+        function renderTableView() {
+            const tbody = document.getElementById('table-view-tbody');
+            tbody.innerHTML = '';
+            const propsArray = Object.values(window.properties);
+            document.getElementById('table-total-count').innerText = `共 ${propsArray.length} 筆物件`;
+
+            propsArray.sort((a, b) => {
+                let valA = a[window.sortState.key] || '';
+                let valB = b[window.sortState.key] || '';
+                if (!isNaN(parseFloat(valA))) valA = parseFloat(valA);
+                if (!isNaN(parseFloat(valB))) valB = parseFloat(valB);
+
+                if (valA < valB) return window.sortState.asc ? -1 : 1;
+                if (valA > valB) return window.sortState.asc ? 1 : -1;
+                return 0;
             });
 
-            tbody.innerHTML = sorted.map(p => {
-                const unitPrice = p.ping > 0 ? (p.totalPrice / p.ping).toFixed(1) : 0;
-                const days = p.listingDate ? Math.ceil((new Date() - new Date(p.listingDate)) / (1000 * 60 * 60 * 24)) : 0;
-                return `
-                    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                        <td class="p-3 font-semibold text-slate-900">${p.address || '未命名'}</td>
-                        <td class="p-3 text-right font-extrabold text-indigo-700">${p.totalPrice || 0} 萬</td>
-                        <td class="p-3 text-right">${p.ping || 0} 坪</td>
-                        <td class="p-3 text-right font-bold text-slate-700">${unitPrice} 萬</td>
-                        <td class="p-3 text-center text-slate-500">${p.agentCompany || '--'}</td>
-                        <td class="p-3 text-center">${p.room || 0}房${p.hall || 0}廳${p.bath || 0}衛</td>
-                        <td class="p-3 text-center">${p.age || 0} 年</td>
-                        <td class="p-3 text-center text-amber-600 font-bold">${days || 0} 天</td>
-                        <td class="p-3 text-center">${p.isSold ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold text-[10px]">已售出</span>' : '<span class="px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-semibold text-[10px]">在售中</span>'}</td>
-                        <td class="p-3 text-center">
-                            <button onclick="switchToEditAndSelect('${p.id}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md font-semibold text-xs">檢視</button>
-                        </td>
-                    </tr>
+            propsArray.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 border-b border-slate-100";
+                tr.innerHTML = `
+                    <td class="p-3">${p.isSold ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold text-[10px]">已售出</span>' : '<span class="px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-semibold text-[10px]">在售中</span>'}</td>
+                    <td class="p-3 font-semibold text-slate-800">${p.address || '--'}</td>
+                    <td class="p-3 font-bold text-indigo-700">${p.totalPrice || '--'} 萬</td>
+                    <td class="p-3">${(p.totalPrice && p.ping) ? (p.totalPrice/p.ping).toFixed(1) + ' 萬' : '--'}</td>
+                    <td class="p-3">${p.ping || '--'} 坪</td>
+                    <td class="p-3">${p.age || '--'} 年</td>
+                    <td class="p-3">${p.floorCurrent || '--'}/${p.floorTotal || '--'} 樓</td>
+                    <td class="p-3 text-slate-500">${p.address && p.address.includes('太順街') ? '太順街區域' : '樹林周邊'}</td>
+                    <td class="p-3 text-amber-700 font-medium">${p.listingDate ? Math.ceil(Math.abs(new Date() - new Date(p.listingDate))/(1000*60*60*24)) + ' 天' : '--'}</td>
+                    <td class="p-3">${p.agentCompany || ''} ${p.agentName || ''}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="switchView('editor'); loadPropertyToForm('${p.id}')" class="text-indigo-600 hover:text-indigo-800 font-semibold px-2 py-1 rounded hover:bg-indigo-50">
+                            編輯
+                        </button>
+                    </td>
                 `;
-            }).join('');
-        };
+                tbody.appendChild(tr);
+            });
+        }
 
-        window.switchToEditAndSelect = function(id) {
-            currentPropertyId = id;
-            switchView('editor');
-            loadPropertyToForm(id);
-        };
-
-        window.sortTable = function(field) {
-            if (currentSortField === field) {
-                sortAscending = !sortAscending;
+        window.sortTable = function(key) {
+            if (window.sortState.key === key) {
+                window.sortState.asc = !window.sortState.asc;
             } else {
-                currentSortField = field;
-                sortAscending = true;
+                window.sortState.key = key;
+                window.sortState.asc = true;
             }
-            renderTable();
+            renderTableView();
         };
 
+        // 自動補全清單更新
+        function updateDatalists() {
+            const companies = new Set();
+            const agents = new Set();
+            Object.values(window.properties).forEach(p => {
+                if (p.agentCompany) companies.add(p.agentCompany);
+                if (p.agentName) agents.add(p.agentName);
+            });
+
+            const dlComp = document.getElementById('datalist-agentCompany');
+            const dlAgent = document.getElementById('datalist-agentName');
+            dlComp.innerHTML = Array.from(companies).map(c => `<option value="${c}">`).join('');
+            dlAgent.innerHTML = Array.from(agents).map(a => `<option value="${a}">`).join('');
+        }
+
+        // 匯出 / 匯入 JSON 備份
         window.exportJSON = function() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(properties, null, 2));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", `house_notes_backup_${new Date().toISOString().split('T')[0]}.json`);
-            dlAnchorElem.click();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.properties, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `house_notes_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
         };
 
         window.importJSON = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
                 try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        properties = imported;
-                        if (properties.length > 0) currentPropertyId = properties[0].id;
-                        renderPropertyList();
-                        if (currentPropertyId) loadPropertyToForm(currentPropertyId);
-                        renderTable();
-                        syncToFirebase();
-                        showModal("成功", "已成功匯入備份資料！");
-                    } else {
-                        showModal("格式錯誤", "匯入的 JSON 格式不正確。");
+                    const importedData = JSON.parse(e.target.result);
+                    if (typeof importedData === 'object') {
+                        window.properties = importedData;
+                        window.saveToCloud();
+                        alert("匯入成功！資料已同步至雲端。");
                     }
-                } catch(err) {
-                    showModal("解析失敗", "無法讀取 JSON 檔案。");
+                } catch (err) {
+                    alert("JSON 檔案格式錯誤，無法正確匯入。");
                 }
             };
-            reader.readAsText(file);
-        };
-
-        function updateSyncStatus(text) {
-            document.getElementById('sync-text').innerText = text;
-        }
-
-        function showModal(title, message) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-message').innerText = message;
-            document.getElementById('custom-modal').classList.remove('hidden');
-        }
-
-        window.closeModal = function() {
-            document.getElementById('custom-modal').classList.add('hidden');
-        };
-
-        String.prototype.hashCode = function() {
-            let hash = 0;
-            for (let i = 0; i < this.length; i++) {
-                hash = ((hash << 5) - hash) + this.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash);
+            fileReader.readAsText(event.target.files[0]);
         };
     </script>
 </body>
